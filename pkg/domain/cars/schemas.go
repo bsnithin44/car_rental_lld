@@ -38,7 +38,7 @@ func NewCar(typeOfCar CarType) ICar {
 		return NewSedan()
 
 	case SUVCarType:
-		return NewSedan()
+		return NewSUV()
 	}
 	return nil
 }

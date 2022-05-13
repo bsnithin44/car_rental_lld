@@ -32,6 +32,16 @@ func (s *Station) AddCar(car cars.ICar) error {
 	return errors.New("Car already Added")
 }
 
+func (s *Station) DropCar(i int) error {
+	if len(s.AvailableCars) == 1 {
+		s.AvailableCars = []cars.ICar{}
+		return nil
+	}
+
+	s.AvailableCars = append(s.AvailableCars[:i], s.AvailableCars[i+1:]...)
+	return nil
+}
+
 func (s *Station) GetCar(carID string) cars.ICar {
 	for _, c := range s.AvailableCars {
 		if carID == c.GetLicenseNo() {
@@ -48,37 +58,22 @@ func (s *Station) GetStationReport() {
 func (s *Station) DelistCar(car cars.ICar) error {
 
 	// todo replace with get car and updatecar methods
-	for _, c := range s.AvailableCars {
+	for i, c := range s.AvailableCars {
 		if c.GetLicenseNo() == car.GetLicenseNo() {
-			if c.GetCarStatus() {
-				return errors.New("Car already booked")
-			} else {
-				c.SetCarStatus(true)
-				return nil
-
-			}
+			c.SetCarStatus(true)
+			s.DropCar(i)
+			return nil
 
 		}
 	}
 	return errors.New("Car not found")
 }
 
-func (s *Station) RelistCar(car cars.ICar) error {
+func (s *Station) RelistCar(car cars.ICar) {
 
 	// todo replace with get car and updatecar methods
-	for _, c := range s.AvailableCars {
-		if c.GetLicenseNo() == car.GetLicenseNo() {
-			if !c.GetCarStatus() {
-				return errors.New("Car not booked")
-			} else {
-				c.SetCarStatus(false)
-				return nil
-
-			}
-
-		}
-	}
-	return errors.New("Car not found")
+	car.SetCarStatus(false)
+	s.AddCar(car)
 }
 
 func (s *Station) ValidateCar(car cars.ICar) bool {

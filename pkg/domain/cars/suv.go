@@ -16,5 +16,5 @@ func NewSUV() ICar {
 }
 
 func (nS *SUVCar) GetLicenseNo() string {
-	return nS.License
+	return nS.ID
 }

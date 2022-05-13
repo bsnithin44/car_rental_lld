@@ -36,14 +36,17 @@ func (cR *CarRentalApp) UpdateStation(station stations.Station) {
 	}
 }
 
-func (cR *CarRentalApp) BookVehicle(car cars.ICar, pickup stations.Station) (*bookings.Booking, error) {
+func (cR *CarRentalApp) BookVehicle(car cars.ICar, pickupName string) (*bookings.Booking, error) {
+
+	pickup := cR.GetStation(pickupName)
 
 	if pickup.ValidateCar(car) {
 		newBooking := bookings.NewBooking(car)
-		newBooking.SetPickup(pickup)
+		newBooking.SetPickup(*pickup)
 
 		cR.bookings = append(cR.bookings, &newBooking)
 		pickup.DelistCar(car)
+		cR.UpdateStation(*pickup)
 
 		return &newBooking, nil
 
@@ -52,17 +55,16 @@ func (cR *CarRentalApp) BookVehicle(car cars.ICar, pickup stations.Station) (*bo
 
 }
 
-func (cR *CarRentalApp) CloseBooking(booking bookings.Booking, drop stations.Station) error {
+func (cR *CarRentalApp) CloseBooking(booking bookings.Booking, dropName string) error {
 
+	drop := cR.GetStation(dropName)
 	for _, b := range cR.bookings {
 		if b.ID == booking.ID {
-			b.SetDrop(drop)
-			err := drop.RelistCar(b.GetCar())
-			if err != nil {
+			b.SetDrop(*drop)
+			drop.RelistCar(b.GetCar())
 
-				return err
-			}
 			b.CloseBooking()
+			cR.UpdateStation(*drop)
 			return nil
 		}
 

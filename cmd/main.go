@@ -12,14 +12,16 @@ func main() {
 	rentalApp := carRental.NewCarRentalApp("flip")
 
 	c1 := cars.NewCar(cars.SedanCarType)
-	c2 := cars.NewCar(cars.SedanCarType)
+	// c2 := cars.NewCar(cars.SUVCarType)
 
 	st1 := stations.NewStation("bellandur", 0)
+	st2 := stations.NewStation("hsr", 0)
 	st1.AddCar(c1)
 
 	rentalApp.AddStation(*st1)
+	rentalApp.AddStation(*st2)
 
-	st1.AddCar(c2)
+	// st1.AddCar(c2)
 
 	rentalApp.UpdateStation(*st1)
 
@@ -30,15 +32,22 @@ func main() {
 		fmt.Println(i, c.GetLicenseNo())
 	}
 
-	b1, _ := rentalApp.BookVehicle(c1, *st1)
-	b3, _ := rentalApp.BookVehicle(c2, *st1)
+	fmt.Println("c1 booked", c1.GetCarStatus())
+	b1, _ := rentalApp.BookVehicle(c1, st1.Name)
+	fmt.Println("c1 booked", c1.GetCarStatus())
 
-	b3, err := rentalApp.BookVehicle(c1, *st1)
-	fmt.Println(b3 == nil)
+	_, err := rentalApp.BookVehicle(c1, st1.Name)
 	fmt.Println(err)
 
-	fmt.Println(b1.ID)
-	rentalApp.CloseBooking(*b1, *st1)
-	abc := rentalApp.CloseBooking(*b1, *st1)
-	fmt.Println(abc)
+	rentalApp.CloseBooking(*b1, st2.Name)
+	// err = rentalApp.CloseBooking(*b1, *st2)
+	// fmt.Println(err)
+	fmt.Println("c1 booked", c1.GetCarStatus())
+
+	_, _ = rentalApp.BookVehicle(c1, st1.Name)
+	fmt.Println("c1 booked", c1.GetCarStatus())
+
+	_, _ = rentalApp.BookVehicle(c1, st2.Name)
+	fmt.Println("c2 booked", c1.GetCarStatus())
+
 }
