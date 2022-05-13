@@ -34,3 +34,6 @@ func (b *Booking) SetDrop(station stations.Station) {
 func (b *Booking) CloseBooking() {
 	b.isActive = false
 }
+func (b *Booking) GetCar() cars.ICar {
+	return b.car
+}

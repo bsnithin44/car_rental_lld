@@ -1,13 +1,13 @@
 package cars
 
-type carType string
+type CarType string
 
 type carPrice int
 
 const (
-	SUVCarType       carType = "SUV"
-	HatchBackCarType carType = "Hatchback"
-	SedanCarType     carType = "sedan"
+	SUVCarType       CarType = "SUV"
+	HatchBackCarType CarType = "Hatchback"
+	SedanCarType     CarType = "sedan"
 
 	SUVPrice   carPrice = 11
 	SedanPrice carPrice = 20
@@ -19,7 +19,7 @@ type Car struct {
 	License string
 
 	ID       string
-	Type     carType
+	Type     CarType
 	Price    int
 	isBooked bool
 }
@@ -30,7 +30,7 @@ type ICar interface {
 	GetCarStatus() bool
 }
 
-func NewCar(typeOfCar carType) ICar {
+func NewCar(typeOfCar CarType) ICar {
 
 	switch typeOfCar {
 

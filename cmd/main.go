@@ -30,13 +30,15 @@ func main() {
 		fmt.Println(i, c.GetLicenseNo())
 	}
 
-	b1 := rentalApp.BookVehicle(c1, *st1)
-	b2 := rentalApp.BookVehicle(c2, *st1)
+	b1, _ := rentalApp.BookVehicle(c1, *st1)
+	b3, _ := rentalApp.BookVehicle(c2, *st1)
 
-	b3 := rentalApp.BookVehicle(c1, *st1)
-	fmt.Println(b3==nil)
+	b3, err := rentalApp.BookVehicle(c1, *st1)
+	fmt.Println(b3 == nil)
+	fmt.Println(err)
 
 	fmt.Println(b1.ID)
 	rentalApp.CloseBooking(*b1, *st1)
-	rentalApp.CloseBooking(*b2, *st1)
+	abc := rentalApp.CloseBooking(*b1, *st1)
+	fmt.Println(abc)
 }

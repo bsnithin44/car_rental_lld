@@ -16,7 +16,7 @@ type ICarRentalApp interface {
 	AddStation(station stations.Station)
 	UpdateStation(station stations.Station)
 	GetStation(name string) *stations.Station
-	// SearchVehicle(Type string)
+	// SearchVehicle(Type cars.CarType)
 
 	BookVehicle(car cars.ICar, station stations.Station) bookings.Booking
 	CloseBooking(booking bookings.Booking, drop stations.Station)
